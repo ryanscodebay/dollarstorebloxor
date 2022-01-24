@@ -1,0 +1,11 @@
+[gd_scene format=2]
+
+[node name="block" type="Spatial"]
+
+[node name="mesh" type="MeshInstance" parent="."]
+
+[node name="blockbody" type="RigidBody" parent="."]
+
+[node name="blockboundcheck" type="Area" parent="."]
+
+[node name="blocktimer" type="Timer" parent="."]
