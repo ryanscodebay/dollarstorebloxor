@@ -1,11 +1,69 @@
-[gd_scene format=2]
+[gd_scene load_steps=6 format=2]
 
-[node name="block" type="Spatial"]
+[ext_resource path="res://scripts/block.gd" type="Script" id=1]
 
-[node name="mesh" type="MeshInstance" parent="."]
+[sub_resource type="SpatialMaterial" id=3]
+params_grow = true
+params_grow_amount = 0.005
+albedo_color = Color( 0.176471, 0.662745, 0.490196, 1 )
 
-[node name="blockbody" type="RigidBody" parent="."]
+[sub_resource type="CubeMesh" id=4]
+material = SubResource( 3 )
+size = Vector3( 1, 2, 1 )
 
-[node name="blockboundcheck" type="Area" parent="."]
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.5, 1, 0.5 )
 
-[node name="blocktimer" type="Timer" parent="."]
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 0.45, 0.1, 0.45 )
+
+[node name="block" type="Spatial" groups=[
+"block",
+]]
+script = ExtResource( 1 )
+
+[node name="RigidBody" type="RigidBody" parent="."]
+collision_layer = 2
+collision_mask = 7
+gravity_scale = 0.0
+contacts_reported = 1
+can_sleep = false
+
+[node name="MeshInstance" type="MeshInstance" parent="RigidBody"]
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
+shape = SubResource( 1 )
+
+[node name="Up" type="Area" parent="RigidBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+input_ray_pickable = false
+angular_damp = 1.0
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody/Up"]
+shape = SubResource( 2 )
+
+[node name="Down" type="Area" parent="RigidBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+input_ray_pickable = false
+angular_damp = 1.0
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody/Down"]
+shape = SubResource( 2 )
+
+[node name="gravity" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.5
+one_shot = true
+
+[node name="respawn" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+
+[connection signal="timeout" from="gravity" to="." method="zero_gravity"]
+[connection signal="timeout" from="respawn" to="." method="respawn"]

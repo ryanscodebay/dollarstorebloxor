@@ -1,13 +1,34 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
 
-[node name="level" type="GridMap"]
+[ext_resource path="res://assets/meshlib.meshlib" type="MeshLibrary" id=1]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.45, 2, 0.45 )
+
+[node name="level" type="Spatial"]
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource( 1 )
+cell_size = Vector3( 1, 1, 1 )
 data = {
-"cells": PoolIntArray(  )
+"cells": PoolIntArray( 0, 0, 1179648 )
 }
 __meta__ = {
-"_editor_clip_": 0
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 0, 0 )
 }
 
-[node name="boundcheck" type="Area" parent="."]
+[node name="startpoint" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0 )
 
-[node name="spawn" type="Position3D" parent="."]
+[node name="goal" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="goal"]
+shape = SubResource( 1 )
+
+[node name="gravity" type="Timer" parent="goal"]
+
+[node name="inbounds" type="Area" parent="."]
+
+[node name="CollisionPolygon" type="CollisionPolygon" parent="inbounds"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
